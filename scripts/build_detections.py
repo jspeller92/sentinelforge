@@ -61,7 +61,7 @@ for rule in sorted(DETECTIONS_DIR.rglob("*.yml")):
         text=True,
     )
 
-    successful_builds_names.append(rule.name)
+    
 
     if result.returncode != 0:
         print(f"CONVERSION FAILED: {rule.name}")
@@ -75,6 +75,8 @@ for rule in sorted(DETECTIONS_DIR.rglob("*.yml")):
         
     
     output_file.write_text(result.stdout)
+
+    successful_builds_names.append(rule.name)
 
     print(f"BUILT: {output_file.name}")
     successful_builds += 1
@@ -94,3 +96,11 @@ if failed_rules:
 print("\nSUCCESSFUL BUILDS:")
 for name in successful_builds_names:
     print(f"{name}")
+
+
+if failed_rules:
+    print("\nBUILD FAILED")
+    raise SystemExit(1)
+
+
+print("\nBUILD SUCCESSFUL")
