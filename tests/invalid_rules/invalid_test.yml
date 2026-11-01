@@ -1,0 +1,9 @@
+title: Invalid Test Rule
+status: experimental
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|invalidmodifier: powershell.exe
+    condition: selection

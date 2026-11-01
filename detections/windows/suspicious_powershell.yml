@@ -1,0 +1,32 @@
+title: Suspisious PowerShell Execution
+id: 9c32a7b1-4f21-4e8a-9c11-123456789001
+status: experimental
+description: Detects PowerShell execution using hidden window or encoded command arguments.
+author: Jordan Speller
+date: 2026-10-31
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+  selection_hidden:
+    CommandLine|contains:
+      - '-WindowStyle Hidden'
+      - ' -w hidden'
+  selection_encoded:
+    CommandLine|contains:
+      - ' -EncodedCommand'
+      - ' -enc '
+  condition: selection_image and (selection_hidden or selection_encoded)
+falsepositives:
+  - Legitimate administrative scripts using encoded commands.
+  - Automation tools running PowerShell in hidden windows
+level: medium
