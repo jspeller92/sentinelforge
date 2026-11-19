@@ -1,4 +1,7 @@
-from sentinelforge.event_analysis import count_powershell_events, count_encoded_powershell_events, get_powershell_suspicion_reasons, encoded_command_flags, hidden_window_command_flags, hidden_window_values
+from sentinelforge.event_analysis import count_powershell_events, count_encoded_powershell_events, get_powershell_suspicion_reasons, encoded_command_flags, hidden_window_command_flags, hidden_window_values, analyze_event_file_findings
+
+encoded_powershell = "tests/fixtures/sysmon_encoded_powershell.json"
+benign_powershell = "tests/fixtures/sysmon_benign_powershell.json"
 
 
 def test_counts_powershell():
@@ -240,4 +243,22 @@ def test_malformed_command_line():
         "CommandLine": ' powershell.exe -Command "Write-Output hello'
     }
     result = get_powershell_suspicion_reasons(event)
+    assert result == []
+
+def test_analyze_encoded_event_file_findings():
+    event = {
+        "Image": "powershell.exe",
+        "CommandLine": "powershell.exe -encodedcommand ABC123"
+    }
+
+    result = analyze_event_file_findings(encoded_powershell)
+    assert len(result) == 1
+    assert result[0]["reasons"] == ["Encoded flag found"]
+
+def test_analyze_benign_event_file_findings():
+    event = {
+        "Image": "powershell.exe",
+        "CommandLine": "powershell.exe -NoProfile -NonInteractive -Command \"Get-Service -Name Spooler\""
+    }
+    result = analyze_event_file_findings(benign_powershell)
     assert result == []

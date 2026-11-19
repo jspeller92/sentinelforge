@@ -128,3 +128,7 @@ def is_suspicious_powershell(event):
         is_powershell_process(event)
         and bool(get_powershell_suspicion_reasons(event))
     )
+
+def analyze_event_file_findings(file_path):
+    events = load_events(file_path)
+    return get_suspicious_powershell_findings(events)
