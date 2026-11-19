@@ -1,0 +1,9 @@
+pyproject.toml
+src/sentinelforge/__init__.py
+src/sentinelforge/event_analysis.py
+src/sentinelforge.egg-info/PKG-INFO
+src/sentinelforge.egg-info/SOURCES.txt
+src/sentinelforge.egg-info/dependency_links.txt
+src/sentinelforge.egg-info/top_level.txt
+tests/test_event_analysis.py
+tests/test_suspicious_powershell.py
